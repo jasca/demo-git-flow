@@ -1,0 +1,11 @@
+{
+  "name": "demo-escuela",
+  "version": "1.0.0",
+  "description": "Demo de arquitectura Git Flow con Docker Multi-stage",
+  "scripts": {
+    "build": "rm -rf dist && mkdir -p dist && cp -r src/* dist/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

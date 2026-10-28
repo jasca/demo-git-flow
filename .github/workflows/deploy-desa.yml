@@ -1,0 +1,41 @@
+name: Deploy a Desarrollo
+
+# Se dispara únicamente cuando hay cambios en la rama 'desa'
+on:
+  push:
+    branches:
+      - desa
+
+jobs:
+  build-and-test:
+    name: 1. Compilar y Validar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Compilar con npm
+        run: |
+          npm run build
+
+      - name: Validar construcción de imagen Docker
+        run: |
+          docker build -t demo-app:desa .
+
+
+  deploy-vps:
+    name: 2. Desplegar en VPS de Desarrollo
+    needs: build-and-test # Solo corre si el paso anterior no falló
+    runs-on: ubuntu-latest
+    steps:
+      - name: Conectar al VPS y actualizar
+        run: |
+          echo "Conectando al VPS de Desa..."
+          echo "Ejecutando: git pull origin desa"
+          echo "Ejecutando: docker compose up -d --build"
+          echo "¡VPS de Desarrollo actualizado con éxito!"
